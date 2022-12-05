@@ -1,0 +1,13 @@
+.list-expenses{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.expenses {
+    padding: 1rem;
+    background-color: rgb(31, 31, 31);
+    width: 50rem;
+    max-width: 95%;
+    margin: 2rem auto;
+}
