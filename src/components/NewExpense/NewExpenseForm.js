@@ -1,26 +1,22 @@
 import React from "react";
+import FormHandlers from "./FormHandlers";
 import { useState } from "react";
 import "./NewExpenseForm.css";
 
 const NewExpenseForm = (props) => {
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [date, setDate] = useState(new Date());
-
-  const titleHandler = (newTitle) => {
-    console.log(newTitle);
-    setTitle(newTitle);
+  const inputObj = {
+    title: "",
+    amount: "",
+    date: "",
   };
-  const amountHandler = (newAmount) => {
-    console.log(newAmount);
-    setAmount(newAmount);
-  };
-  const dateHandler = (newDate) => {
-    console.log(newDate);
-    setDate(newDate);
-  };
+  const [userInput, setUserInput] = useState(inputObj);
+  console.log("On Render", userInput);
   return (
-    <form>
+    <form
+      onSubmit={(event) => {
+        FormHandlers.submitHandler(event, setUserInput, inputObj);
+      }}
+    >
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
@@ -28,7 +24,11 @@ const NewExpenseForm = (props) => {
             type="text"
             id="title"
             name="title"
-            onChange={(event) => titleHandler(event.target.value)}
+            value={userInput.title}
+            onChange={(event) => {
+              const title = event.target.value;
+              FormHandlers.titleHandler(title, setUserInput);
+            }}
           ></input>
         </div>
         <div className="new-expense__control">
@@ -37,7 +37,11 @@ const NewExpenseForm = (props) => {
             type="number"
             id="amount"
             name="amount"
-            onChange={(event) => amountHandler(event.target.value)}
+            value={userInput.amount}
+            onChange={(event) => {
+              const amount = event.target.value;
+              FormHandlers.amountHandler(amount, setUserInput);
+            }}
           ></input>
         </div>
         <div className="new-expense__control">
@@ -46,12 +50,16 @@ const NewExpenseForm = (props) => {
             type="date"
             id="date"
             name="date"
-            onChange={(event) => dateHandler(event.target.value)}
+            value={userInput.date}
+            onChange={(event) => {
+              const date = event.target.value;
+              FormHandlers.dateHandler(date, setUserInput);
+            }}
           ></input>
         </div>
       </div>
       <div className="new-expense__actions">
-        <button type="submit" onClick={() => console.log(title, amount, date)}>
+        <button type="submit" onClick={() => console.log(userInput)}>
           Add Expense
         </button>
       </div>
