@@ -6,7 +6,7 @@ import "./Card.css";
 
 const Card = (props) => {
   const _class = props.className;
-  return <div class={"card " + _class}>{props.children}</div>;
+  return <div className={"card " + _class}>{props.children}</div>;
 };
 
 export default Card;

@@ -1,14 +1,12 @@
 import "./App.css";
-// import ExpenseItem from "./components/ExpenseItem";
-import Expenses from "./components/Expreses";
+import Expenses from "./components/expenses/Expenses";
+import NewExpense from "./components/NewExpense/NewExpense";
 
-const App = () => {
-  return (
-    <div>
-      <div className="title-text">Expense Report!</div>
-      <Expenses />
-    </div>
-  );
-};
-
+const App = () => (
+  <div>
+    <div className="title-text">Expense Tracker</div>
+    <NewExpense />
+    <Expenses />
+  </div>
+);
 export default App;
