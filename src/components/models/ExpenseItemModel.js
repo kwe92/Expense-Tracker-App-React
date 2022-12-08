@@ -15,6 +15,15 @@ class ExpenseItemModel {
       date: this.date,
     };
   };
+
+  static fromObj(obj) {
+    return new ExpenseItemModel(
+      obj["id"],
+      obj["title"],
+      obj["amount"],
+      obj["date"]
+    );
+  }
 }
 
 export default ExpenseItemModel;
