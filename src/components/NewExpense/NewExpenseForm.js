@@ -4,23 +4,33 @@ import { useState } from "react";
 import "./NewExpenseForm.css";
 import ExpenseItemModel from "../models/ExpenseItemModel";
 
+// return a random number between (1000, 9999) - inclusive??
 const _rand = () => Math.floor(Math.random() * 9999 + 1000);
 
 const NewExpenseForm = (props) => {
-  const inputObj = new ExpenseItemModel(_rand(), "", "", "").toObject();
+  // Inital state | Empty ExpenseItemModel Object
 
-  // {
-  //   id: some_random_number
-  //   title: "",
-  //   amount: "",
-  //   date: "",
-  // };
-  const [userInput, setUserInput] = useState(inputObj);
+  const [userInput, setUserInput] = useState(
+    //  useState called once upon inital rendering
+    //  ExpenseItemModel is called only twice
+    //  initally and on form submission
+    new ExpenseItemModel(_rand(), "", "", "").toObject()
+  );
+  // Log state everytime the component is re rendered
+
   console.log("On Render", userInput);
+
   return (
     <form
+      // pass event to prevent default behavior
+      // pass setState function (the name is arbitrary)
+      // pass new Expense type to reset state to an emtpy ExpenseItem Object with an id
       onSubmit={(event) => {
-        FormHandlers.submitHandler(event, setUserInput, inputObj);
+        FormHandlers.submitHandler(
+          event,
+          setUserInput,
+          new ExpenseItemModel(_rand(), "", "", "").toObject()
+        );
       }}
     >
       <div className="new-expense__controls">
@@ -30,9 +40,13 @@ const NewExpenseForm = (props) => {
             type="text"
             id="title"
             name="title"
+            // Changes value displayed to user in input field
+            // Usecase clear input field
             value={userInput.title}
             onChange={(event) => {
+              // Nested value from DOM synthetic event object
               const title = event.target.value;
+              // Handle setting title state
               FormHandlers.titleHandler(title, setUserInput);
             }}
           ></input>
@@ -46,6 +60,7 @@ const NewExpenseForm = (props) => {
             value={userInput.amount}
             onChange={(event) => {
               const amount = event.target.value;
+              // Handle setting amount state
               FormHandlers.amountHandler(amount, setUserInput);
             }}
           ></input>
@@ -59,13 +74,22 @@ const NewExpenseForm = (props) => {
             value={userInput.date}
             onChange={(event) => {
               const date = event.target.value;
+              // Handle setting date state
               FormHandlers.dateHandler(date, setUserInput);
             }}
           ></input>
         </div>
       </div>
       <div className="new-expense__actions">
-        <button type="submit" onClick={() => console.log(userInput)}>
+        <button
+          type="submit"
+          onClick={() => {
+            // Uttilize the props.onSubmit callback passsed from the parent component
+            // to call the function pointed at in memory
+            // Returning data to the parent
+            props.onSubmit(userInput);
+          }}
+        >
           Add Expense
         </button>
       </div>
