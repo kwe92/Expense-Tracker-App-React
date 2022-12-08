@@ -7,14 +7,14 @@ const Expenses = (props) => {
   // Array of expense objects
   const expenses = fetchExpenses();
 
-  // Turns each expense object into an
+  // Turns each ExpenseItemModel into an
   // ExpenseItem custom HTML element wrapped in an <li> element tag
-  const listExpenseItem = expenses.map((expense) => (
-    <li>
+  const listExpenseItem = expenses.map((expenseItem) => (
+    <li key={expenseItem.id}>
       <ExpenseItem
-        title={expense.title}
-        price={expense.price}
-        date={expense.date}
+        title={expenseItem.title}
+        price={expenseItem.amount}
+        date={expenseItem.date}
       />
     </li>
   ));
