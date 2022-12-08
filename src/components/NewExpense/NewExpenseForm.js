@@ -9,15 +9,13 @@ const _rand = () => Math.floor(Math.random() * 9999 + 1000);
 
 const NewExpenseForm = (props) => {
   // Inital state | Empty ExpenseItemModel Object
-
+  //  useState called once upon inital rendering
+  //  ExpenseItemModel is called only twice
+  //  initally and on form submission
   const [userInput, setUserInput] = useState(
-    //  useState called once upon inital rendering
-    //  ExpenseItemModel is called only twice
-    //  initally and on form submission
     new ExpenseItemModel(_rand(), "", "", "").toObject()
   );
   // Log state everytime the component is re rendered
-
   console.log("On Render", userInput);
 
   return (
@@ -81,16 +79,26 @@ const NewExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        {/* Add Expense Button */}
         <button
           type="submit"
           onClick={() => {
-            // Uttilize the props.onSubmit callback passsed from the parent component
-            // to call the function pointed at in memory
-            // Returning data to the parent
-            props.onSubmit(userInput);
+            // Submit if the user object is completely filled out
+            if (userInput.title && userInput.amount && userInput.date)
+              props.onSubmit(userInput);
+            else return;
           }}
         >
           Add Expense
+        </button>
+        {/* Sort Button */}
+        <button
+          type="button"
+          onClick={() => {
+            props.sort();
+          }}
+        >
+          Sort
         </button>
       </div>
     </form>

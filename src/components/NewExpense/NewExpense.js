@@ -2,15 +2,17 @@ import React from "react";
 import NewExpenseForm from "./NewExpenseForm";
 import "./NewExpense.css";
 
-const newExpenseDataHandler = (enteredExpenseData) => {
-  const expenseData = enteredExpenseData;
-  console.log(expenseData);
-};
+const NewExpense = (props) => {
+  const newExpenseDataHandler = (enteredExpenseData) => {
+    console.log(enteredExpenseData);
+    props.onNewExpense(enteredExpenseData);
+  };
 
-const NewExpense = () => (
-  <div className="new-expense">
-    <NewExpenseForm onSubmit={newExpenseDataHandler} />
-  </div>
-);
+  return (
+    <div className="new-expense">
+      <NewExpenseForm onSubmit={newExpenseDataHandler} sort={props.sort} />
+    </div>
+  );
+};
 
 export default NewExpense;
