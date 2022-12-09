@@ -4,14 +4,9 @@ import { useState } from "react";
 import "./NewExpenseForm.css";
 import ExpenseItemModel from "../models/ExpenseItemModel";
 
-// return a random number between (1000, 9999) - inclusive??
 const _rand = () => Math.floor(Math.random() * 9999 + 1000);
 
 const NewExpenseForm = (props) => {
-  // Inital state | Empty ExpenseItemModel Object
-  //  useState called once upon inital rendering
-  //  ExpenseItemModel is called only twice
-  //  initally and on form submission
   const [userInput, setUserInput] = useState(
     new ExpenseItemModel(_rand(), "", "", "").toObject()
   );
@@ -20,9 +15,7 @@ const NewExpenseForm = (props) => {
 
   return (
     <form
-      // pass event to prevent default behavior
-      // pass setState function (the name is arbitrary)
-      // pass new Expense type to reset state to an emtpy ExpenseItem Object with an id
+      // Submit Handler
       onSubmit={(event) => {
         FormHandlers.submitHandler(
           event,
@@ -38,11 +31,10 @@ const NewExpenseForm = (props) => {
             type="text"
             id="title"
             name="title"
-            // Changes value displayed to user in input field
-            // Usecase clear input field
+            // Two way binding
             value={userInput.title}
             onChange={(event) => {
-              // Nested value from DOM synthetic event object
+              // DOM synthetic event object
               const title = event.target.value;
               // Handle setting title state
               FormHandlers.titleHandler(title, setUserInput);
@@ -83,8 +75,11 @@ const NewExpenseForm = (props) => {
         <button
           type="submit"
           onClick={() => {
-            // Submit if the user object is completely filled out
-            if (userInput.title && userInput.amount && userInput.date)
+            // Submit if the user object has no empty values
+            if (
+              (userInput.id,
+              userInput.title && userInput.amount && userInput.date)
+            )
               props.onSubmit(userInput);
             else return;
           }}
