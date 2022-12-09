@@ -1,56 +1,75 @@
 import "./App.css";
 import Expenses from "./components/expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
-import fetchExpenses from "./components/data/ExpenseData";
 import ExpenseItem from "./components/expenses/ExpenseItem";
-import { useState } from "react";
-// import ExpenseItemModel from "./components/models/ExpenseItemModel";
+import { useEffect, useState } from "react";
+import expenseData from "./components/data/ExpenseData";
+import ExpenseItemModel from "./components/models/ExpenseItemModel";
 
 const App = () => {
-  // Array of expense objects
-  const expenses = fetchExpenses();
+  // Array destructuring
+  const [expenseList, setExpenseList] = useState([]);
+  const [sortPressed, setSortPressed] = useState(false);
 
-  const listExpenseItem = expenses.map((expenseItem) => (
+  // Kinda like initState / CommponentDidMount
+  useEffect(() => {
+    setExpenseList(expenseData);
+  }, []);
+
+  // Conditional sorting
+
+  const sortHandler = () => {
+    let sortedData;
+    if (!sortPressed) {
+      sortedData = [...expenseList].sort((a, b) => {
+        return a.id > b.id ? -1 : 1;
+      });
+      setSortPressed(true);
+    } else {
+      sortedData = [...expenseList].sort((a, b) => {
+        return a.id > b.id ? 1 : -1;
+      });
+      setSortPressed(false);
+    }
+
+    setExpenseList(sortedData);
+  };
+
+  //Array of ExpenseItems li wrapped
+  const listExpenseItem = expenseList.map((expenseItem) => (
     <li key={expenseItem.id}>
       <ExpenseItem
         title={expenseItem.title}
         price={expenseItem.amount}
-        date={expenseItem.date}
+        date={new Date(expenseItem.date)}
       />
     </li>
   ));
 
-  const [expenseList, setExpenseList] = useState(listExpenseItem);
+  // Add new expense to expense list
+
   const expenseDataHandler = (expense) => {
-    console.log("From App.js", expense);
+    // console.log("From App.js", expense);
+
     setExpenseList((prevState) => {
       return [
-        <li>
-          <ExpenseItem
-            title={expense.title}
-            price={expense.amount}
-            date={new Date(expense.date)}
-          />
-        </li>,
+        new ExpenseItemModel(
+          expense.id,
+          expense.title,
+          expense.amount,
+          expense.date
+        ),
+        // spreading
         ...prevState,
       ];
     });
   };
 
-  //todo: Make the sort button work
-  // const sort = () => {
-  //   setExpenseList((prevState) => {
-  //     const ps = prevState.sort((a, b) => {
-  //       return a - b;
-  //     });
-  //     return ps;
-  //   });
-  // };
   return (
     <div>
       <div className="title-text">Expense Tracker</div>
-      <NewExpense onNewExpense={expenseDataHandler} />
-      <Expenses expenses={expenseList} />
+      <NewExpense onNewExpense={expenseDataHandler} sort={sortHandler} />
+      <Expenses expenses={listExpenseItem} />
     </div>
   );
 };
