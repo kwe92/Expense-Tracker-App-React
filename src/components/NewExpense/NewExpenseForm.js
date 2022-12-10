@@ -2,14 +2,10 @@ import React from "react";
 import FormHandlers from "./FormHandlers";
 import { useState } from "react";
 import "./NewExpenseForm.css";
-import ExpenseItemModel from "../models/ExpenseItemModel";
-
-const _rand = () => Math.floor(Math.random() * 9999 + 1000);
+import expenseItemObj from "../models/ExpenseItemObj";
 
 const NewExpenseForm = (props) => {
-  const [userInput, setUserInput] = useState(
-    new ExpenseItemModel(_rand(), "", "", "").toObject()
-  );
+  const [userInput, setUserInput] = useState(expenseItemObj("", "", ""));
   // Log state everytime the component is re rendered
   console.log("On Render", userInput);
 
@@ -20,7 +16,7 @@ const NewExpenseForm = (props) => {
         FormHandlers.submitHandler(
           event,
           setUserInput,
-          new ExpenseItemModel(_rand(), "", "", "").toObject()
+          expenseItemObj("", "", "")
         );
       }}
     >

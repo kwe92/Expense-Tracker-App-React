@@ -4,7 +4,8 @@ import NewExpense from "./components/NewExpense/NewExpense";
 import ExpenseItem from "./components/expenses/ExpenseItem";
 import { useEffect, useState } from "react";
 import expenseData from "./components/data/ExpenseData";
-import ExpenseItemModel from "./components/models/ExpenseItemModel";
+import expenseItemObj from "./components/models/ExpenseItemObj";
+import ExpenseFilter from "./components/expenses/ExpenseFilter";
 
 const App = () => {
   // Array destructuring
@@ -22,12 +23,12 @@ const App = () => {
     let sortedData;
     if (!sortPressed) {
       sortedData = [...expenseList].sort((a, b) => {
-        return a.id > b.id ? -1 : 1;
+        return a.amount > b.amount ? -1 : 1;
       });
       setSortPressed(true);
     } else {
       sortedData = [...expenseList].sort((a, b) => {
-        return a.id > b.id ? 1 : -1;
+        return a.amount > b.amount ? 1 : -1;
       });
       setSortPressed(false);
     }
@@ -53,12 +54,7 @@ const App = () => {
 
     setExpenseList((prevState) => {
       return [
-        new ExpenseItemModel(
-          expense.id,
-          expense.title,
-          expense.amount,
-          expense.date
-        ),
+        expenseItemObj(expense.title, expense.amount, expense.date),
         // spreading
         ...prevState,
       ];
@@ -69,6 +65,7 @@ const App = () => {
     <div>
       <div className="title-text">Expense Tracker</div>
       <NewExpense onNewExpense={expenseDataHandler} sort={sortHandler} />
+      <ExpenseFilter />
       <Expenses expenses={listExpenseItem} />
     </div>
   );
