@@ -3,22 +3,24 @@ import ChartBar from "./ChartBar";
 import "./Chart.css";
 
 const Chart = (props) => {
-  const valueArray = props.dataPoints.map((dataPoint) => dataPoint.value);
-  // List total value
-  const totalMaximum = valueArray.reduce((a, b) => a + b, 0);
+  // List of expenses by month by year filter
+  const expenseByMonth = props.monthlyTotals.map(
+    (dataPoint) => dataPoint.value
+  );
+  // List total expenses by year filter
+  const totalExpenses = expenseByMonth.reduce((a, b) => a + b, 0);
 
   return (
+    // Return a list of ChartBar elements for monthly expenses filtered by year
     <div className="chart">
-      {props.dataPoints.map((dataPoint) => {
-        return (
-          <ChartBar
-            key={dataPoint.label}
-            value={dataPoint.value}
-            maxValue={totalMaximum}
-            label={dataPoint.label}
-          />
-        );
-      })}
+      {props.monthlyTotals.map((month) => (
+        <ChartBar
+          key={month.label}
+          value={month.value}
+          total={totalExpenses}
+          label={month.label}
+        />
+      ))}
     </div>
   );
 };
