@@ -1,6 +1,7 @@
 import "./ExpenseFilter.css";
 
 const ExpenseFilter = (props) => {
+  // Handle what year was selected and calls a pointer pass as the property filter
   const selectedHandler = (event) => {
     const date = event.target.value;
     props.filter(date);
