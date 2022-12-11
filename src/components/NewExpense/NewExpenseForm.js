@@ -3,68 +3,60 @@ import FormHandlers from "./FormHandlers";
 import { useState } from "react";
 import "./NewExpenseForm.css";
 import expenseItemObj from "../models/ExpenseItemObj";
+import TitleField from "./TitleField";
+import AmountField from "./AmountField";
+import DateField from "./DateField";
+import newExpenseAlert from "./NewExpenseAlert";
 
 const NewExpenseForm = (props) => {
   const [userInput, setUserInput] = useState(expenseItemObj("", "", ""));
+
+  // Submit if filled | alert if not
+  const submit = (input) =>
+    input.id && input.title && input.amount && input.date
+      ? props.onSubmit(input)
+      : newExpenseAlert(input);
+
   // Log state everytime the component is re rendered
   console.log("On Render", userInput);
 
   return (
     <form
       // Submit Handler
-      onSubmit={(event) => {
+      onSubmit={(event) =>
         FormHandlers.submitHandler(
           event,
           setUserInput,
           expenseItemObj("", "", "")
-        );
-      }}
+        )
+      }
     >
       <div className="new-expense__controls">
-        <div className="new-expense__control">
-          <label>Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            // Two way binding
-            value={userInput.title}
-            onChange={(event) => {
-              // DOM synthetic event object
-              const title = event.target.value;
-              // Handle setting title state
-              FormHandlers.titleHandler(title, setUserInput);
-            }}
-          ></input>
-        </div>
-        <div className="new-expense__control">
-          <label>Amount</label>
-          <input
-            type="number"
-            id="amount"
-            name="amount"
-            value={userInput.amount}
-            onChange={(event) => {
-              const amount = event.target.value;
-              // Handle setting amount state
-              FormHandlers.amountHandler(amount, setUserInput);
-            }}
-          ></input>
-        </div>
-        <div className="new-expense__control">
-          <label>Date</label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={userInput.date}
-            onChange={(event) => {
-              const date = event.target.value;
-              // Handle setting date state
-              FormHandlers.dateHandler(date, setUserInput);
-            }}
-          ></input>
-        </div>
+        <TitleField
+          input={userInput}
+          //  DOM synthetic event object
+          // Handle setting title state
+          onChange={(event) => {
+            const title = event.target.value;
+            FormHandlers.titleHandler(title, setUserInput);
+          }}
+        />
+        <AmountField
+          input={userInput}
+          onChange={(event) => {
+            const amount = event.target.value;
+            // Handle setting amount state
+            FormHandlers.amountHandler(amount, setUserInput);
+          }}
+        />
+        <DateField
+          input={userInput}
+          onChange={(event) => {
+            const date = event.target.value;
+            // Handle setting date state
+            FormHandlers.dateHandler(date, setUserInput);
+          }}
+        />
       </div>
       <div className="new-expense__actions">
         {/* Add Expense Button */}
@@ -72,12 +64,7 @@ const NewExpenseForm = (props) => {
           type="submit"
           onClick={() => {
             // Submit if the user object has no empty values
-            if (
-              (userInput.id,
-              userInput.title && userInput.amount && userInput.date)
-            )
-              props.onSubmit(userInput);
-            else return;
+            submit(userInput);
           }}
         >
           Add Expense

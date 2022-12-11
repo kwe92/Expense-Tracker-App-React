@@ -3,10 +3,8 @@ import NewExpenseForm from "./NewExpenseForm";
 import "./NewExpense.css";
 
 const NewExpense = (props) => {
-  const newExpenseDataHandler = (enteredExpenseData) => {
-    console.log(enteredExpenseData);
+  const newExpenseDataHandler = (enteredExpenseData) =>
     props.onNewExpense(enteredExpenseData);
-  };
 
   return (
     <div className="new-expense">
