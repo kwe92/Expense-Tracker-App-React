@@ -1,6 +1,6 @@
 # Expense Tracker React
 
-Expense tracker built with React.
+Reponsive Expense tracker built with React.
 
 Screenshot:
 
