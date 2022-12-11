@@ -3,6 +3,7 @@ import ChartBar from "./ChartBar";
 import "./Chart.css";
 
 const Chart = (props) => {
+  console.log("From Chart.js", props.monthlyTotals);
   // List of expenses by month by year filter
   const expenseByMonth = props.monthlyTotals.map(
     (dataPoint) => dataPoint.value

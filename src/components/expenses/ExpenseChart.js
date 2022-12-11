@@ -4,14 +4,12 @@ import monthlyTotals from "../data/ChartData";
 
 const ExpenseChart = (props) => {
   //TODO: Fix error, adds when App.js rerenders
-  for (let i = 0; i < props.expenses.length; i++) {
-    // Abbreviated month
-    const expenseMonth = props.expenses[i].date.getMonth();
-    // Total for each calander month
-    monthlyTotals[expenseMonth].value += props.expenses[i].amount;
+
+  for (const expense of props.expenses) {
+    console.log("From ExpenseChart expense", expense.amount);
+    const expenseMonth = expense.date.getMonth();
+    monthlyTotals[expenseMonth].value += expense.amount;
   }
-  console.log("From ExpenseChart monthlyTotals", monthlyTotals);
-  // Return the Chart
   return <Chart monthlyTotals={monthlyTotals}></Chart>;
 };
 export default ExpenseChart;
