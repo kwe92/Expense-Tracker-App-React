@@ -1,16 +1,17 @@
+import expenseItemObj from "../models/ExpenseItemObj";
 const rand = () => {
   return Math.floor(Math.random() * 9999 + 1000);
 };
 
-const expenseItemObj = (title, amount, date) => {
-  // Can not omit curly brackets when returning object literals
-  return {
-    id: rand(),
-    title: title,
-    amount: amount,
-    date: date,
-  };
-};
+// const expenseItemObj = (title, amount, date) => {
+//   // Can not omit curly brackets when returning object literals
+//   return {
+//     id: rand(),
+//     title: title,
+//     amount: amount,
+//     date: date,
+//   };
+// };
 
 // Hard coded data to populate the UI
 const expenseData = [
@@ -25,9 +26,7 @@ const expenseData = [
 // }
 
 // console.log(
-//   expenseData.filter((expense) => {
-//     expense.date.getFullYear() > 2020;
-//   })
+//   expenseData.filter((expense) => expense.date.getFullYear() === 2022)
 // );
 
 export default expenseData;
