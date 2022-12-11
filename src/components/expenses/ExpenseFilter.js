@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import "./ExpenseFilter.css";
 
 const ExpenseFilter = (props) => {
-  const [selected, setSelected] = useState("all");
-  const selectedHandler = (val) => {
-    setSelected(val);
+  const selectedHandler = (event) => {
+    const date = event.target.value;
+    props.filter(date);
   };
   return (
     <div className={"expenses-filter"}>

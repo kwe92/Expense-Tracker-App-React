@@ -5,7 +5,7 @@ import "./NewExpenseForm.css";
 import expenseItemObj from "../models/ExpenseItemObj";
 
 const NewExpenseForm = (props) => {
-  const [userInput, setUserInput] = useState(expenseItemObj("", "", ""));
+  const [userInput, setUserInput] = useState(expenseItemObj("", 0, new Date()));
   // Log state everytime the component is re rendered
   console.log("On Render", userInput);
 
@@ -16,7 +16,7 @@ const NewExpenseForm = (props) => {
         FormHandlers.submitHandler(
           event,
           setUserInput,
-          expenseItemObj("", "", "")
+          expenseItemObj("", 0, new Date())
         );
       }}
     >

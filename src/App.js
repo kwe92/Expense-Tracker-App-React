@@ -1,3 +1,5 @@
+//TODO: Finish Expense Chart
+
 import "./App.css";
 import Expenses from "./components/expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
@@ -6,19 +8,21 @@ import { useEffect, useState } from "react";
 import expenseData from "./components/data/ExpenseData";
 import expenseItemObj from "./components/models/ExpenseItemObj";
 import ExpenseFilter from "./components/expenses/ExpenseFilter";
+import ExpenseChart from "./components/expenses/ExpenseChart";
 
 const App = () => {
   // Array destructuring
   const [expenseList, setExpenseList] = useState([]);
   const [sortPressed, setSortPressed] = useState(false);
+  const [dateFilter, setDateFilter] = useState("all");
 
   // Kinda like initState / CommponentDidMount
-  useEffect(() => {
-    setExpenseList(expenseData);
-  }, []);
+  useEffect(() => setExpenseList(expenseData), []);
+
+  // Filter handler
+  const filterHandler = (date) => setDateFilter(date);
 
   // Conditional sorting
-
   const sortHandler = () => {
     let sortedData;
     if (!sortPressed) {
@@ -36,37 +40,60 @@ const App = () => {
     setExpenseList(sortedData);
   };
 
-  //Array of ExpenseItems li wrapped
-  const listExpenseItem = expenseList.map((expenseItem) => (
-    <li key={expenseItem.id}>
-      <ExpenseItem
-        title={expenseItem.title}
-        price={expenseItem.amount}
-        date={new Date(expenseItem.date)}
-      />
-    </li>
-  ));
+  //Filter Array
+  let listExpenseItem2;
+  // Present all expense elements
+  if (dateFilter === "all") {
+    listExpenseItem2 = expenseList.map((expenseItem) => (
+      <li key={expenseItem.id}>
+        <ExpenseItem
+          title={expenseItem.title}
+          price={expenseItem.amount}
+          date={new Date(expenseItem.date)}
+        />
+      </li>
+    ));
+  }
+  // Present elements based on the dateFilter
+  else {
+    console.log(expenseList);
+    // Filter expenseList by dateFilter
+    const expenseLst = expenseList.filter(
+      (expense) => expense.date.getFullYear() === parseInt(dateFilter)
+    );
 
-  // Add new expense to expense list
+    // Array of <li> wrapped custom HTML ExpenseItem elements
+    listExpenseItem2 = expenseLst.map((expenseItem) => (
+      <li key={expenseItem.id}>
+        <ExpenseItem
+          title={expenseItem.title}
+          price={expenseItem.amount}
+          date={new Date(expenseItem.date)}
+        />
+      </li>
+    ));
+  }
+  // Add new expense to expense list of expense obj
+  const expenseDataHandler = (expense) =>
+    setExpenseList((prevState) => [
+      expenseItemObj(
+        expense.title,
+        parseFloat(expense.amount),
+        new Date(expense.date)
+      ),
+      // spreading
+      ...prevState,
+    ]);
 
-  const expenseDataHandler = (expense) => {
-    // console.log("From App.js", expense);
-
-    setExpenseList((prevState) => {
-      return [
-        expenseItemObj(expense.title, expense.amount, expense.date),
-        // spreading
-        ...prevState,
-      ];
-    });
-  };
+  console.log("from APP", expenseList);
 
   return (
     <div>
       <div className="title-text">Expense Tracker</div>
       <NewExpense onNewExpense={expenseDataHandler} sort={sortHandler} />
-      <ExpenseFilter />
-      <Expenses expenses={listExpenseItem} />
+      <ExpenseFilter filter={filterHandler} />
+      <ExpenseChart expenses={expenseList} />
+      <Expenses expenses={listExpenseItem2} />
     </div>
   );
 };
