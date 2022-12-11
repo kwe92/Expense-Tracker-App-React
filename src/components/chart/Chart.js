@@ -3,14 +3,13 @@ import ChartBar from "./ChartBar";
 import "./Chart.css";
 
 const Chart = (props) => {
-  console.log("from Chat.js props.dataPoints", props.dataPoints);
   const valueArray = props.dataPoints.map((dataPoint) => dataPoint.value);
-  console.log("from Chat.js valueArray", valueArray);
-  const totalMaximum = Math.max(...valueArray);
+  // List total value
+  const totalMaximum = valueArray.reduce((a, b) => a + b, 0);
+
   return (
     <div className="chart">
       {props.dataPoints.map((dataPoint) => {
-        console.log("From Chart.js ", dataPoint);
         return (
           <ChartBar
             key={dataPoint.label}

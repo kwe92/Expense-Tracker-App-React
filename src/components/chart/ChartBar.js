@@ -4,12 +4,9 @@ import "./ChartBar.css";
 const ChartBar = (props) => {
   let barFillHeight = "0%";
 
-  // TODO: FIX
   if (props.maxValue > 0) {
-    console.log("MATH:", Math.round(props.value / props.maxValue));
-    barFillHeight = Math.floor((props.value / props.maxValue) * 100) + "%";
-
-    console.log("from Chart Bar barFillHeight", barFillHeight);
+    // Return percent of total
+    barFillHeight = Math.round((props.value / props.maxValue) * 100) + "%";
   }
   return (
     <div className="chart-bar">

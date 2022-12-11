@@ -8,4 +8,5 @@
     display: flex;
     justify-content: space-around;
     height: 10rem;
+    margin: 1rem;
   }
