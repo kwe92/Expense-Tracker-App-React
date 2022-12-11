@@ -42,8 +42,10 @@ const App = () => {
 
   //Filter Array
   let listExpenseItem2;
+  let expenseLst;
   // Present all expense elements
   if (dateFilter === "all") {
+    expenseLst = expenseList;
     listExpenseItem2 = expenseList.map((expenseItem) => (
       <li key={expenseItem.id}>
         <ExpenseItem
@@ -58,7 +60,7 @@ const App = () => {
   else {
     console.log(expenseList);
     // Filter expenseList by dateFilter
-    const expenseLst = expenseList.filter(
+    expenseLst = expenseList.filter(
       (expense) => expense.date.getFullYear() === parseInt(dateFilter)
     );
 
@@ -92,7 +94,7 @@ const App = () => {
       <div className="title-text">Expense Tracker</div>
       <NewExpense onNewExpense={expenseDataHandler} sort={sortHandler} />
       <ExpenseFilter filter={filterHandler} />
-      <ExpenseChart expenses={expenseList} />
+      <ExpenseChart expenses={expenseLst} />
       <Expenses expenses={listExpenseItem2} />
     </div>
   );
